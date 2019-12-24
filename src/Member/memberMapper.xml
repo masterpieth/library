@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "Member.MemberMapper">
+<insert id="insertMember" parameterType="vo.Member">
+insert into member(
+    member_id,
+    member_pw,
+    member_name,
+    member_phone
+)
+values(
+    #{member_id},
+    #{member_pw},
+    #{member_name},
+    #{member_phone}
+)
+</insert>
+<select id="selectMember" resultType="vo.Member">
+select * from member
+</select>
+<delete id="deleteMember" parameterType="vo.Member">
+delete from member
+where 
+member_id = #{member_id} and member_pw = #{member_pw}
+</delete>
+<select id="readMember" parameterType="String" resultType="vo.Member">
+select * from member where member_id = #{member_id}
+</select>
+<select id="readMemberByPhone" parameterType="String" resultType="vo.Member">
+select * from member where member_phone = #{member_phone}
+</select>
+<select id="readMemberByIdPw" parameterType="vo.Member" resultType="vo.Member">
+select * from member where member_id = #{member_id} and member_pw = #{member_pw}
+</select>
+
+</mapper>

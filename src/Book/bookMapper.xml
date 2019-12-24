@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Book.BookMapper">
+
+	<insert id="addBook" parameterType="vo.Book">
+		insert into
+			book (
+				book_name,
+				book_number,
+				book_author,
+				book_publisher
+			) values (
+				#{book_name},
+				#{book_number},
+				#{book_author},
+				#{book_publisher}
+			)
+	</insert>
+	
+	<delete id="deleteBook" parameterType="int">
+		delete
+			book
+		where
+			book_number = #{no}
+	</delete>
+	
+<select id="searchBook" parameterType = "HashMap" resultType = "vo.Book">
+select *
+from Book
+where
+<if test="sel == 1">book_name like '%'||#{words}||'%'</if>
+<if test="sel == 2">book_number = #{words}</if>
+<if test="sel == 3">book_author like '%'||#{words}||'%'</if>
+</select>
+
+<select id="selectBookInfo" parameterType = "int" resultType = "vo.Book">
+select * from book where book_number = #{book_number}
+</select>
+
+<update id="updateRentStatus" parameterType = "Integer">
+update book set book_status = '대여중'
+where book_status = '가능' and book_number = #{book_number}
+</update>
+
+<update id="updateReturnStatus" parameterType = "Integer">
+update book set book_status = '가능'
+where book_status = '대여중' and book_number = #{book_number}
+</update>
+
+<delete id = "deleteRent" parameterType = "vo.Rent">
+
+delete from RENT where rent_member_id = #{rent_member_id} and rent_book_number = #{rent_book_number}
+</delete>
+<insert id="insertRent" parameterType="vo.Rent">
+insert into rent(
+rent_no,
+rent_member_id,
+rent_book_number
+) values(
+rent_seq.nextval,
+#{rent_member_id},
+#{rent_book_number}
+)
+</insert>
+
+<select id="readRent" resultType="vo.Rent">
+select 
+rent_member_id,
+rent_book_number,
+rent_rentdate,
+rent_returndate 
+from rent where rent_member_id = #{member_id}
+order by rent_rentdate
+</select>
+
+<select id="readRentByBookNum" parameterType="int" resultType="vo.Rent">
+select 
+rent_member_id,
+rent_book_number,
+rent_rentdate,
+rent_returndate 
+from rent where rent_book_number = #{rent_book_number}
+order by rent_rentdate
+</select>
+
+<update id="updateReturnDate" parameterType="hashmap">
+update rent
+set
+    rent_returndate = rent_returndate + #{day}
+where
+    rent_book_number = #{bookNum}
+</update>
+<select id="selectBookAll" resultType="vo.Book">
+select * from book order by book_number
+</select>
+</mapper>
