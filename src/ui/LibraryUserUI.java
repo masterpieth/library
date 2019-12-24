@@ -21,7 +21,7 @@ public class LibraryUserUI {
 	public LibraryUserUI(Member member) {
 		exec(member);
 	}
-
+//¡÷ºÆ
 	public void exec(Member member) {
 		this.member_id = member.getMember_id();
 		this.member_pw = member.getMember_pw();
